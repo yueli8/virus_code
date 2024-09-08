@@ -1,0 +1,28 @@
+hp@HP-Workstation:~/STAR-2.7.11b/bin/Linux_x86_64$ STAR  --runMode genomeGenerate --genomeDir ./index --genomeFastaFiles ce11.fa --sjdbGTFfile Caenorhabditis_elegans.WBcel235.104.gtf --genomeSAindexNbases 12
+hp@HP-Workstation:~/STAR-2.7.11b/bin/Linux_x86_64$ STAR  --runMode alignReads --readFilesCommand zcat  --quantMode TranscriptomeSAM GeneCounts --twopassMode Basic --outSAMtype BAM SortedByCoordinate --outSAMunmapped None --genomeDir index --outFilterMultimapNmax 10000 --alignIntronMax 1000000  --outFilterMismatchNmax 999 --readFilesIn C1.rmhost.clean.1.fq.gz C1.rmhost.clean.2.fq.gz --outFileNamePrefix C1 
+Aug 20 22:20:46 ..... started STAR run
+Aug 20 22:20:46 ..... loading genome
+Aug 20 22:20:47 ..... started 1st pass mapping
+Aug 21 01:02:12 ..... finished 1st pass mapping
+Aug 21 01:02:12 ..... inserting junctions into the genome indices
+Aug 21 01:02:16 ..... started mapping
+Aug 21 03:48:07 ..... finished mapping
+Aug 21 03:48:07 ..... started sorting BAM
+Aug 21 03:48:10 ..... finished successfully
+hp@HP-Workstation:~/subread-2.0.6-Linux-x86_64/bin$ featureCounts -p -t gene -g gene_id -a Caenorhabditis_elegans.WBcel235.104.gtf -o all_matrix31 -M -O -C C1Aligned.sortedByCoord.out.bam 
+hp@HP-Workstation:~/nanjing/virus/clean_data$ ./seqkit fq2fa C3.rmhost.clean.2.fq.gz >c3_2.fa
+hp@HP-Workstation:~/ncbi-blast-2.9.0+/bin$ makeblastdb -in waican_gene.fa -parse_seqids -hash_index -dbtype nucl -title waican -out waican
+hp@HP-Workstation:~/ncbi-blast-2.9.0+/bin$ ./blastn -query b3_1.fa -db waican -out b3_1.txt -evalue 1  -outfmt 6
+
+hp@HP-Workstation:~/ncbi-blast-2.9.0+/bin/c1_1$ makeblastdb -in c1_1.fa -parse_seqids -hash_index -dbtype nucl -out c1_1
+
+hp@HP-Workstation:~/STAR-2.7.11b/bin/Linux_x86_64$ STAR  --runMode alignReads --readFilesCommand zcat  --quantMode TranscriptomeSAM GeneCounts --twopassMode Basic --outSAMtype BAM SortedByCoordinate --outSAMunmapped None --genomeDir index --outFilterMultimapNmax 10000 --alignIntronMax 1000000  --outFilterMismatchNmax 999 --readFilesIn B2.rmhost.clean.1.fq.gz B2.rmhost.clean.2.fq.gz --outFileNamePrefix B2
+Aug 21 10:33:52 ..... started STAR run
+Aug 21 10:33:52 ..... loading genome
+Aug 21 10:33:52 ..... started 1st pass mapping
+Aug 22 09:30:22 ..... finished 1st pass mapping
+Aug 22 09:30:22 ..... inserting junctions into the genome indices
+Aug 22 09:30:27 ..... started mapping
+
+
+hp@HP-Workstation:~/ncbi-blast-2.9.0+/bin$ blastn -query c1_2.fa -db waican/waican -evalue 1 -word_size 10 -gapopen 1  -gapextend 1 -outfmt 6 -out result1_1.txt
